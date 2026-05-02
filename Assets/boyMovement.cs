@@ -14,7 +14,8 @@ public class boyMovement : MonoBehaviour
     [SerializeField] float walkSpeed = 4f;
     [SerializeField] float runSpeed = 7f;
     [SerializeField] float crouchSpeed = 2f;
-    [SerializeField] float jumpForce = 5f;
+    [SerializeField] float jumpForce = 6f; // base jump height
+    [SerializeField] float runningJumpBonus = 20f; // extra height when running
     [SerializeField] float rotationSpeed = 10f;
 
     [Header("Punch Settings")]
@@ -23,19 +24,10 @@ public class boyMovement : MonoBehaviour
 
     Vector3 moveDirection;
 
-    // ===== Movement States =====
     bool isWalking;
     bool isRunning;
     bool isCrouching;
-    bool isJumping;
 
-    // ===== Direction States =====
-    bool isLeft;
-    bool isRight;
-    bool isForward;
-    bool isBack;
-
-    // ===== Punch States =====
     bool isPunching1;
     bool isPunching2;
     bool isPunching3;
@@ -55,21 +47,17 @@ public class boyMovement : MonoBehaviour
     void Update()
     {
         // ================= INPUT =================
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
 
+        // dead zone safety
+        if (Mathf.Abs(h) < 0.1f) h = 0f;
+        if (Mathf.Abs(v) < 0.1f) v = 0f;
         moveDirection = new Vector3(h, 0f, v).normalized;
 
         bool grounded = IsGrounded();
 
-        // ================= DIRECTION =================
-        // These now work even while crouching
-        isRight = h > 0.1f;
-        isLeft = h < -0.1f;
-        isForward = v > 0.1f;
-        isBack = v < -0.1f;
-
-        // ================= MAIN STATES =================
+        // ================= STATES =================
         isCrouching = Input.GetKey(KeyCode.LeftControl) && grounded;
 
         isRunning = Input.GetKey(KeyCode.LeftShift) &&
@@ -85,37 +73,54 @@ public class boyMovement : MonoBehaviour
         // ================= JUMP =================
         if (Input.GetKeyDown(KeyCode.Space) && grounded && !isCrouching)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isJumping = true;
+            float finalJump = jumpForce;
+
+            // ⭐ Running jump boost
+            if (isRunning)
+            {
+                finalJump += runningJumpBonus;
+            }
+
+            // reset vertical speed first (important for consistency)
+            rb.linearVelocity = new Vector3(
+                rb.linearVelocity.x,
+                0f,
+                rb.linearVelocity.z
+            );
+
+            rb.linearVelocity = new Vector3(
+                rb.linearVelocity.x,
+                finalJump,
+                rb.linearVelocity.z
+            );
+
+            // animation choice
+            if (isRunning)
+            {
+                animator.SetTrigger("RunningJump");
+            }
+            else
+            {
+                animator.SetTrigger("Jump");
+            }
         }
 
-        if (grounded && rb.linearVelocity.y <= 0.1f)
-        {
-            isJumping = false;
-        }
-
-        // ================= PUNCH SYSTEM =================
+        // ================= PUNCH =================
         isPunching1 = false;
         isPunching2 = false;
         isPunching3 = false;
 
-        // Single / Double Click
         if (Input.GetMouseButtonDown(0))
         {
             if (Time.time - lastClickTime <= doubleClickTime)
-            {
-                isPunching2 = true; // Double Click Punch
-            }
+                isPunching2 = true;
             else
-            {
-                isPunching1 = true; // Single Click Punch
-            }
+                isPunching1 = true;
 
             lastClickTime = Time.time;
             mouseHoldTimer = Time.time;
         }
 
-        // Hold Punch
         if (Input.GetMouseButton(0))
         {
             if (Time.time - mouseHoldTimer >= holdPunchTime)
@@ -134,11 +139,8 @@ public class boyMovement : MonoBehaviour
         else if (isCrouching)
             currentSpeed = crouchSpeed;
 
-        // Optional: stop movement while punching
         if (isPunching1 || isPunching2 || isPunching3)
-        {
             currentSpeed = 0f;
-        }
 
         // ================= MOVEMENT =================
         rb.linearVelocity = new Vector3(
@@ -158,20 +160,12 @@ public class boyMovement : MonoBehaviour
         }
 
         // ================= ANIMATOR =================
-
-        // Main movement
+        animator.SetFloat("moveX", h);
+        animator.SetFloat("moveZ", v);
         animator.SetBool("isWalking", isWalking);
         animator.SetBool("isRunning", isRunning);
         animator.SetBool("isCrouching", isCrouching);
-        animator.SetBool("isJumping", isJumping);
 
-        // Direction (used for crouch left/right/forward/back)
-        animator.SetBool("isLeft", isLeft);
-        animator.SetBool("isRight", isRight);
-        animator.SetBool("isForward", isForward);
-        animator.SetBool("isBack", isBack);
-
-        // Punching
         animator.SetBool("isPunching1", isPunching1);
         animator.SetBool("isPunching2", isPunching2);
         animator.SetBool("isPunching3", isPunching3);
