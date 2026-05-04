@@ -75,7 +75,7 @@ public class boyMovement : MonoBehaviour
         {
             float finalJump = jumpForce;
 
-            // ⭐ Running jump boost
+            //  Running jump boost
             if (isRunning)
             {
                 finalJump += runningJumpBonus;
