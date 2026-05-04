@@ -41,6 +41,10 @@ public class PlayerMovement : MonoBehaviour
     private float _initialJumpVelocity;
     private bool _isJumping;
     
+    // Combat variables
+    [Header("Combat Settings")]
+    public int numberOfPunches = 3;
+    
     // gravity
     float gravity = 9.8f;
     float groundedGravity = -0.5f;
@@ -79,6 +83,8 @@ public class PlayerMovement : MonoBehaviour
 
         _inputSystem.PlayerControls.Jump.started += OnJump;
         _inputSystem.PlayerControls.Jump.canceled += OnJump;
+        
+        _inputSystem.PlayerControls.Punch.started += OnPunch;
 
         SetupJumpVariables();
     }
@@ -145,8 +151,27 @@ public class PlayerMovement : MonoBehaviour
         _isJumpPressed =  context.ReadValueAsButton();
     }
     
+    private void OnPunch(InputAction.CallbackContext context)
+    {
+        if (_characterController.isGrounded && !_isSliding)
+        {
+            PerformRandomPunch();
+        }
+    }
+    
     // ==========================================================================================
-    // Coroutines
+    // Combat Functions
+    // ==========================================================================================
+    
+    private void PerformRandomPunch()
+    {
+        int randomPunch = UnityEngine.Random.Range(0, numberOfPunches);
+        _animator.SetInteger("punchType", randomPunch);
+        _animator.SetTrigger("doPunch");
+    }
+    
+    // ==========================================================================================
+    // Coroutines           
     // ==========================================================================================
     
     private IEnumerator SlideRoutine()
@@ -172,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 appliedMovement = _currentMovement;
-
+        
         if (_isCrouchPressed)
         {
             appliedMovement.x *= crouchMultiplier;
