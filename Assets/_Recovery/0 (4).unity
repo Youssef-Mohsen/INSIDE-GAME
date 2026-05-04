@@ -278,6 +278,8 @@ MonoBehaviour:
   moveSpeed: 10
   runMultiplier: 3
   crouchMultiplier: 0
+  slideSpeed: 10
+  slideDuration: 0.8
   _maxJumpHeight: 50
   _maxJumpTime: 1
 --- !u!4 &647072895 stripped
