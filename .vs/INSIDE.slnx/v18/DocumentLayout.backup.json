@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\dell\\INSIDE\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\dell\\inside\\assets\\boymovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\boymovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\dell\\inside\\assets\\mousel_looking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\mousel_looking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,19 +27,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "boyMovement.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\INSIDE\\Assets\\boyMovement.cs",
+              "RelativeDocumentMoniker": "Assets\\boyMovement.cs",
+              "ToolTip": "C:\\Users\\dell\\INSIDE\\Assets\\boyMovement.cs",
+              "RelativeToolTip": "Assets\\boyMovement.cs",
+              "ViewState": "AgIAAJoAAAAAAAAAAADwv64AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T10:43:29.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "mousel_looking.cs",
               "DocumentMoniker": "C:\\Users\\dell\\INSIDE\\Assets\\mousel_looking.cs",
               "RelativeDocumentMoniker": "Assets\\mousel_looking.cs",
               "ToolTip": "C:\\Users\\dell\\INSIDE\\Assets\\mousel_looking.cs",
               "RelativeToolTip": "Assets\\mousel_looking.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-30T10:27:10.518Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "UniversalAdditionalCameraData.cs",
               "DocumentMoniker": "C:\\Users\\dell\\INSIDE\\Library\\PackageCache\\com.unity.render-pipelines.universal@f76d6966885c\\Runtime\\UniversalAdditionalCameraData.cs",
               "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.render-pipelines.universal@f76d6966885c\\Runtime\\UniversalAdditionalCameraData.cs",
@@ -43,8 +60,7 @@
               "RelativeToolTip": "Library\\PackageCache\\com.unity.render-pipelines.universal@f76d6966885c\\Runtime\\UniversalAdditionalCameraData.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-30T10:23:21.525Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T10:23:21.525Z"
             }
           ]
         }
