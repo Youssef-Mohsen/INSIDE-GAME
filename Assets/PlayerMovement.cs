@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator _animator;
     private CharacterController _characterController;
     private InputSystem_Actions2 _inputSystem;
+    private Transform _mainCamera; // ADDED: Reference to the camera
     
     // Player input values
     private Vector2 _currentMovementInput;
@@ -72,6 +73,16 @@ public class PlayerMovement : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         
+        // ADDED: Cache the main camera's transform
+        if (Camera.main != null)
+        {
+            _mainCamera = Camera.main.transform;
+        }
+        else
+        {
+            Debug.LogError("No camera tagged 'MainCamera' found in the scene!");
+        }
+        
         _inputSystem.PlayerControls.Move.started += OnMovementInput;
         _inputSystem.PlayerControls.Move.canceled += OnMovementInput;
         _inputSystem.PlayerControls.Move.performed += OnMovementInput;
@@ -97,19 +108,20 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void OnControllerColliderHit(ControllerColliderHit hit)
-{
-    // Check if the object we hit has the "Enemy" tag
-    if (hit.gameObject.CompareTag("Enemy"))
     {
-        Debug.Log("Die");
-        Die();
+        // Check if the object we hit has the "Enemy" tag
+        if (hit.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Die");
+            Die();
+        }
     }
-}
 
     private void Update()
     {
         if (!_isDead)
         {
+            CalculateCameraRelativeMovement(); // ADDED: Calculate the direction first
             HandleRotation();
             HandleAnimation();
             HandleMovement();
@@ -125,10 +137,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnMovementInput(InputAction.CallbackContext context)
     {
         _currentMovementInput = context.ReadValue<Vector2>();
-        
-        _currentMovement.x = -_currentMovementInput.x * moveSpeed;
-        _currentMovement.z = -_currentMovementInput.y * moveSpeed;
-        
         _isMovementPressed = _currentMovementInput.x != 0 || _currentMovementInput.y != 0;
     }
 
@@ -139,21 +147,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCrouch(InputAction.CallbackContext context)
     {
-        // If button is pressed down
         if (context.started)
         {
-            // If moving, running, grounded, and not already sliding -> slide
             if (_isMovementPressed && _isRunPressed && _characterController.isGrounded && !_isSliding)
             {
                 StartCoroutine(SlideRoutine());
             }
-            // Otherwise, just crouch normally
             else
             {
                 _isCrouchPressed = true;
             }
         }
-        // If button is released
         else if (context.canceled)
         {
             _isCrouchPressed = false;
@@ -174,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
     }
     
     // ==========================================================================================
-    // Combat Functions
+    // Triggers / Coroutines
     // ==========================================================================================
     
     private void PerformRandomPunch()
@@ -184,29 +188,18 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetTrigger("doPunch");
     }
     
-    // ==========================================================================================
-    // Coroutines           
-    // ==========================================================================================
-    
     private IEnumerator SlideRoutine()
     {
         _isSliding = true;
         _animator.SetBool("isSliding", true);
         
-        // Lock in the direction the player is currently facing to slide in a straight line
         _slideDirection = transform.forward;
 
-        // Wait for the slide to finish
         yield return new WaitForSeconds(slideDuration);
 
-        // Stand back up
         _isSliding = false;
         _animator.SetBool("isSliding", false);
     }
-
-    // ==========================================================================================
-    // Trigger Functions
-    // ==========================================================================================
 
     private void Die()
     {
@@ -217,6 +210,28 @@ public class PlayerMovement : MonoBehaviour
     // ==========================================================================================
     // Per-frame Functions
     // ==========================================================================================
+
+    private void CalculateCameraRelativeMovement()
+    {
+        if (_mainCamera == null) return;
+
+        // Get camera forward and right vectors
+        Vector3 cameraForward = _mainCamera.forward;
+        Vector3 cameraRight = _mainCamera.right;
+
+        // Flatten them on the Y axis so the player doesn't fly up/down based on camera pitch
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        // Calculate movement direction relative to camera
+        Vector3 moveDirection = (cameraForward * _currentMovementInput.y + cameraRight * _currentMovementInput.x).normalized;
+
+        // Set the X and Z movement based on speed
+        _currentMovement.x = moveDirection.x * moveSpeed;
+        _currentMovement.z = moveDirection.z * moveSpeed;
+    }
     
     private void HandleMovement()
     {
@@ -249,6 +264,7 @@ public class PlayerMovement : MonoBehaviour
             _isJumping = false;
         }
     }
+    
     private void HandleAnimation()
     {
         bool isWalking = _animator.GetBool("isWalking");
@@ -272,7 +288,6 @@ public class PlayerMovement : MonoBehaviour
             _animator.SetBool("isRunning", false);
         }
         
-        // Crouching is evaluated last so that it's given priority if both the run button and crouch button are pressed 
         if ((_isMovementPressed && _isCrouchPressed) && !isCrouching)
         {
             _animator.SetBool("isCrouching", true);
@@ -293,6 +308,7 @@ public class PlayerMovement : MonoBehaviour
         Quaternion currentRotation = transform.rotation;
         if (_isMovementPressed)
         {
+            // Now positionToLookAt will automatically point away from the camera when pressing 'W'
             Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
             transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationFactorPerFrame * Time.deltaTime);
         }
@@ -319,5 +335,4 @@ public class PlayerMovement : MonoBehaviour
             _currentMovement.y = nextYVelocity;
         }
     }
-    
 }
