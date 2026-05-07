@@ -44,12 +44,13 @@ public class PlayerMovement : MonoBehaviour
     // Combat variables
     [Header("Combat Settings")]
     public int numberOfPunches = 3;
+    private bool _isDead = false;
     
     // gravity
     float gravity = 9.8f;
     float groundedGravity = -0.5f;
     
-    private readonly float _rotationFactorPerFrame = 10.0f;
+    private readonly float _rotationFactorPerFrame = 20.0f;
     
     // ==========================================================================================
     // Event Functions
@@ -95,13 +96,26 @@ public class PlayerMovement : MonoBehaviour
         _initialJumpVelocity = (2* _maxJumpHeight) / timeToApex; 
     }
     
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+{
+    // Check if the object we hit has the "Enemy" tag
+    if (hit.gameObject.CompareTag("Enemy"))
+    {
+        Debug.Log("Die");
+        Die();
+    }
+}
+
     private void Update()
     {
-        HandleRotation();
-        HandleAnimation();
-        HandleMovement();
-        HandleGravity();
-        HandleJump();
+        if (!_isDead)
+        {
+            HandleRotation();
+            HandleAnimation();
+            HandleMovement();
+            HandleGravity();
+            HandleJump();
+        }
     }
     
     // ==========================================================================================
@@ -165,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void PerformRandomPunch()
     {
-        int randomPunch = UnityEngine.Random.Range(0, numberOfPunches);
+        int randomPunch = UnityEngine.Random.Range(1, numberOfPunches);
         _animator.SetInteger("punchType", randomPunch);
         _animator.SetTrigger("doPunch");
     }
@@ -188,6 +202,16 @@ public class PlayerMovement : MonoBehaviour
         // Stand back up
         _isSliding = false;
         _animator.SetBool("isSliding", false);
+    }
+
+    // ==========================================================================================
+    // Trigger Functions
+    // ==========================================================================================
+
+    private void Die()
+    {
+        _animator.SetTrigger("Dead");
+        _isDead = true;
     }
     
     // ==========================================================================================
