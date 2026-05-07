@@ -42,6 +42,7 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
     private int patrolIndex = 0;
     private float attackTimer = 0f;
+    Animator animator;
 
     void Start()
     {
@@ -50,6 +51,8 @@ public class EnemyAI : MonoBehaviour
 
         rend.material = patrolMaterial;
         agent.speed = patrolSpeed;
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -78,6 +81,12 @@ public class EnemyAI : MonoBehaviour
     // ---------------- PATROL ---------------- //
     void Patrol()
     {
+        animator.SetBool("isWalking", true);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttaking", false);
+
+
+
         rend.material = patrolMaterial;
         agent.speed = patrolSpeed;
 
@@ -109,6 +118,11 @@ public class EnemyAI : MonoBehaviour
     // ---------------- CHASE ---------------- //
     void Chase()
     {
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isRunning", true);
+        animator.SetBool("isAttaking", false);
+
+
         rend.material = chaseMaterial;
         agent.speed = chaseSpeed;
 
@@ -129,6 +143,12 @@ public class EnemyAI : MonoBehaviour
     // ---------------- ATTACK ---------------- //
     void Attack()
     {
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttaking", true);
+
+
+
         rend.material = attackMaterial;
         agent.ResetPath();
 
@@ -138,7 +158,7 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (!PlayerInViewRange())
+        if (!PlayerInChaseRange() || !PlayerInAttackRange())
         {
             currentState = State.Chase;
             return;
@@ -154,6 +174,20 @@ public class EnemyAI : MonoBehaviour
     }
 
     // ---------------- DETECTION ---------------- //
+    bool PlayerInAttackRange()
+    {
+        Vector3 dirToPlayer = player.position - transform.position;
+        float dist = dirToPlayer.magnitude;
+
+        if (dist > attackDistance)
+            return false;
+
+        if (Physics.Raycast(transform.position, dirToPlayer.normalized, dist, obstacleMask))
+            return false;
+
+        return true;
+    }
+
     bool PlayerInChaseRange()
     {
         Vector3 dirToPlayer = player.position - transform.position;
