@@ -10,7 +10,8 @@
 UserSettings/
 MemoryCaptures/
 Recordings/
-
+Assets/AN Interactive Physical Door Pack/
+Assets/TerrainSampleAssets/
 # =========================
 # Unity auto-generated files
 # =========================
@@ -27,6 +28,7 @@ sysinfo.txt
 # IDE / Editor
 # =========================
 .vscode/
+.vs/
 .idea/
 *.csproj
 *.sln

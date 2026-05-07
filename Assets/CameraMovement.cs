@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     public Transform player;
-    public Vector3 offset = new Vector3(19f, 6f, -0.3f);
+    public Vector3 offset;
     public float smoothSpeed = 5f;
 
     void LateUpdate()
@@ -16,6 +16,6 @@ public class CameraMovement : MonoBehaviour
             smoothSpeed * Time.deltaTime
         );
 
-        transform.rotation = Quaternion.Euler(10f, 180f, 0f);
+        transform.rotation = Quaternion.Euler(33f, 0f, 0f);
     }
 }
