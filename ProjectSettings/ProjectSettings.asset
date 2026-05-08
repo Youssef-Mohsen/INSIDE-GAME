@@ -522,7 +522,10 @@ PlayerSettings:
       m_Height: 720
       m_Kind: 1
       m_SubKind: 
-  m_BuildTargetBatching: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: Standalone
+    m_StaticBatching: 1
+    m_DynamicBatching: 0
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
   m_BuildTargetGraphicsJobMode: []
@@ -923,11 +926,11 @@ PlayerSettings:
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: 9f8b76c2-238a-4f79-854d-fccdab6aaa70
+  cloudProjectId: cd6e59b5-3c61-4d28-8957-6e1c53ee7d92
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: INSIDE
-  organizationId: youssefmohsen7110
+  projectName: AnotherOne
+  organizationId: willojr999
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
