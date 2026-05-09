@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
             Die();
         }
     }
-
+   
     private void Update()
     {
         if (!_isDead)

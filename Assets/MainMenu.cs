@@ -10,4 +10,8 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+    public void OnResumeClicked()
+    {
+        Pause_Manager.Instance.ResumeGame();
+    }
 }

@@ -8,8 +8,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/mainMenu.unity
     guid: cb4d3ecb7f942964898188b0dba5e42c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/kt3nScene.unity
     guid: 2fbdb5271017bd7798098616cce57231
+  - enabled: 1
+    path: Assets/Scenes/FinalScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/pausemenu.unity
+    guid: 9d44ffcb765969f4bba13f30aaa44543
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
