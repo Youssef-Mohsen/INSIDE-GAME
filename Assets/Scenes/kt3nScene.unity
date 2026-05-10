@@ -386,9 +386,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7e5a0bb6b43f34f89abc08bec5619d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::mouse_looking
-  player: {fileID: 647072895}
-  offset: {x: 0, y: 12, z: 40}
-  smoothSpeed: 5
+  target: {fileID: 647072895}
+  distance: 5
+  lookAtHeightOffset: 1.5
+  mouseSensitivity: 0.2
+  pitchMinMax: {x: -40, y: 85}
+  invertY: 0
 --- !u!1 &749102004
 GameObject:
   m_ObjectHideFlags: 0
