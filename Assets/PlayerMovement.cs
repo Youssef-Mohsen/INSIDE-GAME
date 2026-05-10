@@ -107,27 +107,36 @@ public class PlayerMovement : MonoBehaviour
         _initialJumpVelocity = (2* _maxJumpHeight) / timeToApex; 
     }
     
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        // Check if the object we hit has the "Enemy" tag
-        if (hit.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Die");
-            Die();
-        }
-    }
+    // private void OnControllerColliderHit(ControllerColliderHit hit)
+    // {
+    //     // Check if the object we hit has the "Enemy" tag
+    //     if (hit.gameObject.CompareTag("Enemy"))
+    //     {
+    //         Debug.Log("Die");
+    //         Die();
+    //     }
+    // }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     // Check if the object we entered has the "Enemy" tag
+    //     if (other.CompareTag("Enemy"))
+    //     {
+    //         Debug.Log("Die");
+    //         Die();
+    //     }
+    // }
    
     private void Update()
     {
-        if (!_isDead)
-        {
-            CalculateCameraRelativeMovement(); // ADDED: Calculate the direction first
+        // if (!_isDead)
+        // {
+            CalculateCameraRelativeMovement(); 
             HandleRotation();
             HandleAnimation();
             HandleMovement();
             HandleGravity();
             HandleJump();
-        }
+        // }
     }
     
     // ==========================================================================================
@@ -201,10 +210,21 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetBool("isSliding", false);
     }
 
-    private void Die()
-    {
+    // wait for x seconds when death is triggered on collison with enemy, looks more realistic.
+    private IEnumerator DeathRoutine()
+    {        
+        _inputSystem.PlayerControls.Disable();    
+        yield return new WaitForSeconds(1.0f);
         _animator.SetTrigger("Dead");
-        _isDead = true;
+    }
+
+    public void Die()
+    {
+        if (!_isDead)
+        {
+            _isDead = true;
+            StartCoroutine(DeathRoutine());
+        }
     }
     
     // ==========================================================================================

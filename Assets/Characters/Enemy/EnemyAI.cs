@@ -38,6 +38,7 @@ public class EnemyAI : MonoBehaviour
     public Material chaseMaterial;
     public Material attackMaterial;
 
+
     private Renderer rend;
     private NavMeshAgent agent;
     private int patrolIndex = 0;
@@ -169,8 +170,17 @@ public class EnemyAI : MonoBehaviour
         if (attackTimer <= 0f)
         {
             Debug.Log("Enemy attacked the player!");
+            
+            PlayerMovement playerScript = player.GetComponent<PlayerMovement>();
+            if (playerScript != null)
+            {
+                playerScript.Die(); 
+            }
+
             attackTimer = attackCooldown;
         }
+
+
     }
 
     // ---------------- DETECTION ---------------- //
