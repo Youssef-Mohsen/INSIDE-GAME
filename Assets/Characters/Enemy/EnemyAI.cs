@@ -169,6 +169,13 @@ public class EnemyAI : MonoBehaviour
         if (attackTimer <= 0f)
         {
             Debug.Log("Enemy attacked the player!");
+
+            PlayerMovement playerScript = player.GetComponent<PlayerMovement>();
+            if (playerScript != null)
+            {
+                playerScript.Die();
+            }
+
             attackTimer = attackCooldown;
         }
     }

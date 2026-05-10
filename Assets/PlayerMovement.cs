@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -119,15 +120,14 @@ public class PlayerMovement : MonoBehaviour
    
     private void Update()
     {
-        if (!_isDead)
-        {
+        
             CalculateCameraRelativeMovement(); // ADDED: Calculate the direction first
             HandleRotation();
             HandleAnimation();
             HandleMovement();
             HandleGravity();
             HandleJump();
-        }
+        
     }
     
     // ==========================================================================================
@@ -201,12 +201,28 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetBool("isSliding", false);
     }
 
-    private void Die()
+    private IEnumerator DeathRoutine()
     {
+        _inputSystem.PlayerControls.Disable();
+        yield return new WaitForSeconds(1.0f);
         _animator.SetTrigger("Dead");
-        _isDead = true;
     }
-    
+
+    public void Die()
+    {
+        if (!_isDead)
+        {
+            _isDead = true;
+            StartCoroutine(DeathRoutine());
+            StartCoroutine(LoadGameOver());
+        }
+    }
+    IEnumerator LoadGameOver()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(5); // change 4 to your GameOver scene index
+    }
+
     // ==========================================================================================
     // Per-frame Functions
     // ==========================================================================================
