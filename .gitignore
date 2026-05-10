@@ -10,7 +10,8 @@
 UserSettings/
 MemoryCaptures/
 Recordings/
-
+Assets/Playground Low Poly/
+Assets/TerrainSampleAssets/
 # =========================
 # Unity auto-generated files
 # =========================
@@ -27,6 +28,7 @@ sysinfo.txt
 # IDE / Editor
 # =========================
 .vscode/
+.vs/
 .idea/
 *.csproj
 *.sln
