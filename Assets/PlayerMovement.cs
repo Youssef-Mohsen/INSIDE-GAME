@@ -108,15 +108,7 @@ public class PlayerMovement : MonoBehaviour
         _initialJumpVelocity = (2* _maxJumpHeight) / timeToApex; 
     }
     
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        // Check if the object we hit has the "Enemy" tag
-        if (hit.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Die");
-            Die();
-        }
-    }
+    
    
     private void Update()
     {

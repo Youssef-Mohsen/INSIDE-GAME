@@ -17,5 +17,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/pausemenu.unity
     guid: 9d44ffcb765969f4bba13f30aaa44543
+  - enabled: 1
+    path: Assets/Scenes/cutScene.unity
+    guid: 1e1392792d0ba5a4da00fa3c3c2d09ad
+  - enabled: 1
+    path: Assets/Scenes/cutScene 2.unity
+    guid: 3b8f92d7500337a4c860b4a812ff3690
+  - enabled: 1
+    path: Assets/Scenes/gameOver.unity
+    guid: 305fee4a2e1c54d44a3333f73fc6bc97
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
